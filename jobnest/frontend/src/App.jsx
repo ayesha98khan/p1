@@ -7,6 +7,7 @@ import Feed from "./pages/Feed";
 import Profile from "./pages/Profile";
 import Applications from "./pages/Applications";
 import RecruiterHub from "./pages/RecruiterHub";
+import Company from "./pages/Company";
 
 export default function App() {
   const authed = !!token();
@@ -22,6 +23,7 @@ export default function App() {
       <Route path="/profile" element={authed ? <Profile /> : <Navigate to="/auth" />} />
       <Route path="/applications" element={authed ? <Applications /> : <Navigate to="/auth" />} />
       <Route path="/recruiter" element={authed ? <RecruiterHub /> : <Navigate to="/auth" />} />
+      <Route path="/company/:id" element={authed ? <Company /> : <Navigate to="/auth" />} />
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
