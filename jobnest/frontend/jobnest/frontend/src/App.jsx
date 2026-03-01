@@ -8,14 +8,12 @@ import Profile from "./pages/Profile";
 import Applications from "./pages/Applications";
 import RecruiterHub from "./pages/RecruiterHub";
 import Company from "./pages/Company";
-import Board from "./pages/Board";
 
 export default function App() {
   const authed = !!token();
 
   return (
     <Routes>
-      <Route path="/board" element={authed ? <Board /> : <Navigate to="/auth" />} />
       <Route path="/" element={<Navigate to={authed ? "/feed" : "/auth"} />} />
 
       <Route path="/auth" element={<Auth />} />

@@ -1,4 +1,3 @@
-import { SparkHeader } from "../components/Illustrations";
 import { useState } from "react";
 import IGShell from "../components/IGShell";
 import MotionPage from "../components/MotionPage";

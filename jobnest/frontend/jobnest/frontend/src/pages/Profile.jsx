@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import IGShell from "../components/IGShell";
 import MotionPage from "../components/MotionPage";
-import { SparkHeader } from "../components/Illustrations";
 import { api, uploadFile, user as getUser } from "../lib/api";
 
 export default function Profile() {
@@ -42,7 +41,7 @@ export default function Profile() {
 
   async function uploadResume() {
     try {
-      if (!resumeFile) return setMsg("Choose a resume first.");
+      if (!resumeFile) return setMsg("Choose a file first.");
       setBusy(true);
       setMsg("Uploading resume...");
       const url = await uploadFile("/api/upload/resume", resumeFile);
@@ -93,21 +92,11 @@ export default function Profile() {
   return (
     <IGShell>
       <MotionPage>
-        {/* ✅ ADD HEADER HERE */}
-        <SparkHeader
-          title="Your Profile"
-          subtitle="Edit profile • Upload resume/logo • IG grid"
-        />
-
-        {/* ✅ Main profile card below header */}
         <div
-          className="border rounded-3xl p-5 shadow-sm mt-5"
-          style={{
-            background: "rgba(var(--card),0.9)",
-            borderColor: "rgb(var(--border))",
-          }}
+          className="border rounded-3xl p-5 shadow-sm"
+          style={{ background: "rgb(var(--card))", borderColor: "rgb(var(--border))" }}
         >
-          {/* Top row */}
+          {/* Header like IG profile */}
           <div className="flex items-center gap-4">
             <div className="w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-400">
               <div
@@ -126,20 +115,19 @@ export default function Profile() {
                 {me?.email} • {me?.role}
               </p>
 
-              <div className="mt-3 flex gap-2 flex-wrap items-center">
+              <div className="mt-3 flex gap-2 flex-wrap">
                 <button
                   disabled={busy}
                   onClick={save}
                   className="px-5 py-2.5 rounded-2xl text-white font-extrabold disabled:opacity-60"
                   style={{ background: "rgb(var(--brand))" }}
                 >
-                  Save
+                  Save Profile
                 </button>
-                {msg && (
-                  <span className="text-sm" style={{ color: "rgb(var(--muted))" }}>
-                    {msg}
-                  </span>
-                )}
+
+                <span className="text-sm self-center" style={{ color: "rgb(var(--muted))" }}>
+                  {msg || ""}
+                </span>
               </div>
             </div>
           </div>
@@ -181,6 +169,7 @@ export default function Profile() {
               </Field>
             </div>
 
+            {/* Student section */}
             {me?.role === "student" && (
               <>
                 <div className="md:col-span-2">
@@ -221,15 +210,15 @@ export default function Profile() {
               </>
             )}
 
+            {/* Recruiter section */}
             {me?.role === "recruiter" && (
               <>
                 <div className="md:col-span-2">
-                  <UploadCard title="Company Logo" subtitle="Shows on jobs + stories.">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
-                    />
+                  <UploadCard
+                    title="Company Logo"
+                    subtitle="This shows on jobs + stories."
+                  >
+                    <input type="file" accept="image/*" onChange={(e) => setLogoFile(e.target.files?.[0] || null)} />
                     <button
                       disabled={busy}
                       className="px-4 py-2 rounded-2xl font-extrabold text-white disabled:opacity-60"
@@ -242,12 +231,11 @@ export default function Profile() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <UploadCard title="Company Feed Photos (IG Grid)" subtitle="Add photos like IG posts.">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
-                    />
+                  <UploadCard
+                    title="Company Feed Photos (IG Grid)"
+                    subtitle="Add photos like Instagram posts."
+                  >
+                    <input type="file" accept="image/*" onChange={(e) => setPhotoFile(e.target.files?.[0] || null)} />
                     <button
                       disabled={busy}
                       className="px-4 py-2 rounded-2xl font-extrabold text-white disabled:opacity-60"
@@ -273,6 +261,18 @@ export default function Profile() {
               </>
             )}
           </div>
+
+          {/* Bottom save */}
+          <div className="mt-6 flex items-center justify-end">
+            <button
+              disabled={busy}
+              onClick={save}
+              className="px-6 py-3 rounded-2xl text-white font-extrabold disabled:opacity-60"
+              style={{ background: "rgb(var(--brand))" }}
+            >
+              Save Changes
+            </button>
+          </div>
         </div>
       </MotionPage>
     </IGShell>
@@ -290,12 +290,22 @@ function Field({ label, children }) {
 
 function UploadCard({ title, subtitle, children }) {
   return (
-    <div className="border rounded-3xl p-4" style={{ borderColor: "rgb(var(--border))" }}>
-      <p className="font-black">{title}</p>
-      <p className="text-sm mt-1" style={{ color: "rgb(var(--muted))" }}>
-        {subtitle}
-      </p>
-      <div className="mt-3 flex gap-2 items-center flex-wrap">{children}</div>
+    <div
+      className="border rounded-3xl p-4"
+      style={{ borderColor: "rgb(var(--border))" }}
+    >
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <p className="font-black">{title}</p>
+          <p className="text-sm mt-1" style={{ color: "rgb(var(--muted))" }}>
+            {subtitle}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-3 flex gap-2 items-center flex-wrap">
+        {children}
+      </div>
     </div>
   );
 }
